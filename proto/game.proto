@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+message Nil {
+}
+
+message JoinRequest {
+}
+
+message JoinResponse {
+    int64 player_id = 1;
+}
+
+message LeaveRequest {
+    int64 player_id = 1;
+}
+
+message MoveRequest {
+    enum Direction {
+        UP = 0;
+        DOWN = 1;
+        LEFT = 2;
+        RIGHT = 3;
+    }
+    Direction dir = 1;
+    int64 player_id = 2;
+}
+
+service Game {
+    rpc Join(JoinRequest) returns (JoinResponse) {}
+    rpc Leave(LeaveRequest) returns (Nil) {}
+    rpc Move(MoveRequest) returns (Nil) {}
+}
