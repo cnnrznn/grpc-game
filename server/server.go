@@ -29,6 +29,8 @@ func (s *gameServer) Join(ctx context.Context, req *pb.JoinRequest) (*pb.JoinRes
         }
     }
 
+    log.Println("Players:", s.players)
+
     return &pb.JoinResponse{PlayerId: r}, nil
 }
 
@@ -57,14 +59,15 @@ func (s *gameServer) Move(ctx context.Context, req *pb.MoveRequest) (*pb.Nil, er
     return &pb.Nil{}, nil
 }
 
-
 func main() {
     lis, err := net.Listen("tcp", ":8888")
     if err != nil {
-        log.Fatal("Failed to open listening socket")
+        log.Panic("Failed to open listening socket")
     }
 
+    gs := gameServer{players: make(map[int64]*Coord)}
+
     grpcServer := grpc.NewServer()
-    pb.RegisterGameServer(grpcServer, &gameServer{})
+    pb.RegisterGameServer(grpcServer, &gs)
     grpcServer.Serve(lis)
 }
