@@ -24,8 +24,13 @@ func main() {
     }
 
     id := resp.PlayerId
-
     log.Println("Received PlayerId", id)
 
+    for i:=0; i<100; i++ {
+        client.Move(context.Background(), &pb.MoveRequest{PlayerId: id,
+                                                          Dir: pb.MoveRequest_RIGHT})
+    }
+
+    log.Println("Leaving Game")
     client.Leave(context.Background(), &pb.LeaveRequest{PlayerId: id})
 }
